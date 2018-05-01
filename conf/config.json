@@ -1,0 +1,10 @@
+{
+  "mysqlHost" : "127.0.0.1",
+  "mysqlUser" : "nodeweb",
+  "mysqlPassword" : "123456789",
+  "database" : "farm",
+  "mysqlPort" : 3306,
+  
+  "socketServerHost" : "127.0.0.1",
+  "socketPort" : 6968
+}

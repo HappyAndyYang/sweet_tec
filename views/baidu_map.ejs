@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,
+		#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3vCqzZB4Q9jRddFBR7bB4BENQYIni2oh"></script>
+	<title>单个标注点沿直线的轨迹运动</title>
+</head>
+<body>
+	<div id="allmap"></div>
+	<div id="camera">dd</div>
+</body>
+</html>
+<script type="text/javascript">
+	var xmlHttp;
+	var i = 0
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+
+	var myP1 = new BMap.Point(116.380967,39.913285);    //起点
+	var myP2 = new BMap.Point(116.424374,39.914668);    //终点
+	var startPoint = myP1;
+	var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/Mario.png", new BMap.Size(32, 70), {    //小车图片
+		//offset: new BMap.Size(0, -5),    //相当于CSS精灵
+		imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
+	  });
+	var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});    //驾车实例
+	driving2.search(myP1, myP2);    //显示一条公交线路
+	
+	var carMk = new BMap.Marker(myP1,{icon:myIcon});
+	map.addOverlay(carMk);
+	
+	window.run = function (point){
+		var driving = new BMap.DrivingRoute(map);    //驾车实例
+		driving.search(myP1, myP2);
+		driving.setSearchCompleteCallback(function(){
+			carMk.setPosition(point);
+		});
+	}
+	function addMarker(point){
+		var marker = new BMap.Marker(point,{icon:myIcon});
+		map.addOverlay(marker);
+	}
+
+	function creatXMLHttpRequest() {
+    	if (window.XMLHttpRequest)
+    	{
+    		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+    		xmlHttp=new XMLHttpRequest();
+    	}
+    	else
+    	{
+    		// IE6, IE5 浏览器执行代码
+    		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+    	}
+	}
+
+	function getPoint() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		i = i+1;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		xmlHttp.open("GET","/GetPoint?count=" + i);
+		xmlHttp.send();//发送请求
+	}
+
+	//处理从服务器返回的信息
+    function processor() {
+    	if (xmlHttp.readyState==4 && xmlHttp.status==200)
+    	{
+    		var result = eval('(' + xmlHttp.responseText + ')');
+    		var latitude = result.latitude;
+    		var longitude = result.longitude;
+    		point = new BMap.Point(latitude,longitude);
+    		run(point);
+    	}
+	}
+	//每隔一秒就执行一次getTime()方法
+    // setInterval("getPoint();", 1000)a
+</script>

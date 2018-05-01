@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>点甜机器人农场之插秧机</title>
+    <link href="./stylesheets/index.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3vCqzZB4Q9jRddFBR7bB4BENQYIni2oh"></script>
+</head>
+<body>
+	<div id="camera">
+		<div id="voido">
+			<iframe id="camera_video" src="http://192.168.2.150:3000/map"></iframe>
+		</div>
+		<div id="control">
+			<div> 
+				<table id="table">
+  					<tr>
+    					<td><button class="btn" id="ahead" type="button" onclick="goAhead()">前进</button></td>
+    					<td></td>
+    					<td><button class="btn" id="back" type="button" onclick="goBack()">后退</button></td>
+  					</tr>
+  					<tr>
+  						<td></td>
+    					<td><button class="btn" id="start" type="button" onclick="start()">启动</button></td>
+    					<td></td>
+  					</tr>
+  					<tr>
+    					<td><button class="btn" id="left" type="button" onclick="turnLeft()">左转</button></td>
+    					<td></td>
+    					<td><button class="btn" id="right" type="button" onclick="turnRight()">右转</button></td>
+  					</tr>
+				</table>	
+			</div>
+		</div>
+	</div>
+	<div id="allmap">
+		<iframe id="map" src="http://192.168.2.150:3000/map"></iframe>
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+	var xmlHttp;
+	var i = 0;
+	var flag = 0;
+	if (window.innerWidth){
+		if (document.getElementById("allmap").style.width < 0) {
+			document.getElementById("allmap").style.width = window.innerWidth + 'px';
+			document.getElementById("allmap").style.height = document.getElementById("camera").offsetHeight;
+		}else{
+			document.getElementById("allmap").style.width = (window.innerWidth - 665) + 'px';
+			console.log(document.getElementById("camera").offsetHeight)
+			console.log(document.getElementById("camera").clientHeight)
+			document.getElementById("allmap").style.height = document.getElementById("camera").offsetHeight;
+		}
+	}
+	else if ((document.body) && (document.body.clientWidth)){
+		if (document.getElementById("allmap").style.width < 0) {
+			document.getElementById("allmap").style.width = document.body.clientWidth + 'px';
+			document.getElementById("allmap").style.height = document.getElementById("camera").clientHeight;
+		}else{
+			document.getElementById("allmap").style.width = (document.body.clientWidth - 665) + 'px';
+			document.getElementById("allmap").style.height = document.getElementById("camera").clientHeight;
+		}
+	}
+
+	window.onresize = function(){
+		// 获取窗口宽度
+		if (window.innerWidth){
+			if (document.getElementById("allmap").style.width < 0) {
+				document.getElementById("allmap").style.width = window.innerWidth + 'px';
+				document.getElementById("allmap").style.height = document.getElementById("camera").offsetHeight;
+			}else{
+				document.getElementById("allmap").style.width = (window.innerWidth - 665) + 'px';
+				document.getElementById("allmap").style.height = document.getElementById("camera").offsetHeight;
+			}
+			
+		}
+		else if ((document.body) && (document.body.clientWidth)){
+			if (document.getElementById("allmap").style.width < 0) {
+				document.getElementById("allmap").style.width = document.body.clientWidth + 'px';
+				document.getElementById("allmap").style.height = document.getElementById("camera").clientHeight;
+				console.log("document.body.clientWidth" + document.body.clientWidth);
+				console.log("----1111111-----");
+			}else{
+				document.getElementById("allmap").style.width = (document.body.clientWidth - 665) + 'px';
+				document.getElementById("allmap").style.height = document.getElementById("camera").clientHeight;
+				console.log("document.body.clientWidth" + document.body.clientWidth - 665);
+				console.log("----1111111-----");
+			}
+			
+		}
+	}
+
+	function creatXMLHttpRequest() {
+    	if (window.XMLHttpRequest)
+    	{
+    		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+    		xmlHttp=new XMLHttpRequest();
+    	}
+    	else
+    	{
+    		// IE6, IE5 浏览器执行代码
+    		xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+    	}
+	}
+
+	function goAhead() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		i = i+1;
+		xmlHttp.open("POST","/control/goAhead?count=" + i);
+		xmlHttp.send();//发送请求
+	}
+
+	function goBack() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		i = i+1;
+		xmlHttp.open("POST","/control/goBack?count=" + i);
+		xmlHttp.send();//发送请求
+	}
+
+	function turnLeft() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		i = i+1;
+		xmlHttp.open("POST","/control/turnLeft?count=" + i);
+		xmlHttp.send();//发送请求
+	}
+
+	function turnRight() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		i = i+1;
+		xmlHttp.open("POST","/control/turnRight?count=" + i);
+		xmlHttp.send();//发送请求
+	}
+
+	function start() {
+		//调用creatXMLHttpRequest创建一个XMLHttpRequest对象
+		creatXMLHttpRequest();
+		//将状态触发器绑定到一个函数
+		xmlHttp.onreadystatechange = processor;
+		//通过get方法向指定URL建立服务器调用
+		//同时设置一个参数是为了让服务器知道这是一个新的请求(i是不断变化的)
+		if (flag%2==0) {
+			xmlHttp.open("POST","/control/start?count=" + flag);
+			document.getElementById("start").innerHTML="停止";
+		}else{
+			xmlHttp.open("POST","/control/stop?count=" + flag);
+			document.getElementById("start").innerHTML="启动";
+		}
+		flag = flag+1;
+		xmlHttp.send();//发送请求
+	}
+
+	//处理从服务器返回的信息
+    function processor() {
+    	if (xmlHttp.readyState==4 && xmlHttp.status==200)
+    	{
+    		var result = eval('(' + xmlHttp.responseText + ')');
+    	}
+	}
+</script>
