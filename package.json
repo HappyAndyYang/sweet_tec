@@ -1,0 +1,42 @@
+{
+  "name": "sweet-weiserver",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon src/bin/www --exec babel-node",
+    "build": "babel src -d build",
+    "serve": "node build/bin/www",
+    "models": "sequelize-auto -o 'src/models' -d nodeweb -h 127.0.0.1 -u nodeweb -p 3306 -x 123456789 -e mysql"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "moment": "^2.22.2",
+    "morgan": "~1.8.1",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.10",
+    "serve-favicon": "~2.4.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client/*",
+      "public/*",
+      "logs/*"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-mocha": "^5.0.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.17.5"
+  }
+}
