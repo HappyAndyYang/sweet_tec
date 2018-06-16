@@ -6,7 +6,7 @@
     "start": "nodemon src/bin/www --exec babel-node",
     "build": "babel src -d build",
     "serve": "node build/bin/www",
-    "models": "sequelize-auto -o 'src/models' -d nodeweb -h 127.0.0.1 -u nodeweb -p 3306 -x 123456789 -e mysql"
+    "models": "sequelize-auto -o 'src/models' -d nodeweb -h 127.0.0.1 -u nodeweb -p 3306 -x Sweet@123 -e mysql"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
