@@ -38,7 +38,7 @@ class Order extends Component {
     const { order: { dpValue, nowTime } } = this.props;
     return (
       <div>
-        <NavBar className={styles.navbar}>活动预约</NavBar>
+        <NavBar className={styles.navbar}>领取预约</NavBar>
         <form>
           <List>
             <InputItem
