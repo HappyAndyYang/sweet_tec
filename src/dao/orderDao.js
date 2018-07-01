@@ -39,10 +39,12 @@ async function insetOrder(params) {
   if (userInfo) {
     return 0;
   }
-  await Order.create({
-    mobile,
-    date: moment(date).format('YYYY-MM-DD'),
-  });
+  // await Order.create({
+  //   mobile,
+  //   date: moment(date).format('YYYY-MM-DD'),
+  // });
+  const sql = `INSERT INTO nodeweb.order (mobile, date) VALUES ('${mobile}','${date}')`;
+  await sequelize.query(sql);
   return 1;
 }
 
@@ -59,8 +61,8 @@ async function countByDate(date) {
 
 async function dealOrder(params) {
   const { mobile, date } = params;
-  // const resultday = await findDayCount(date);
-  // log.info(`resultday${resultday}`);
+  const resultday = await findDayCount(date);
+  log.info(`resultday${resultday}`);
   const count = await countByDate(moment(date).format('YYYY-MM-DD 00:00:00'));
   if (count && count.count > 300) {
     const data = {};
