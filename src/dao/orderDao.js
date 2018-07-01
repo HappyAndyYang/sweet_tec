@@ -59,8 +59,8 @@ async function countByDate(date) {
 
 async function dealOrder(params) {
   const { mobile, date } = params;
-  const resultday = await findDayCount(date);
-  log.info(`resultday${resultday}`);
+  // const resultday = await findDayCount(date);
+  // log.info(`resultday${resultday}`);
   const count = await countByDate(moment(date).format('YYYY-MM-DD 00:00:00'));
   if (count && count.count > 300) {
     const data = {};
