@@ -1,7 +1,10 @@
 import moment from 'moment';
+import { getLogger } from 'log4js';
 import sequelize from '../utils/sequelize';
 
 const Order = sequelize.import('../models/order');
+const DayCount = sequelize.import('../models/dayCount');
+const log = getLogger('dao/orderDao');
 
 async function findByMobile(mobile) {
   const userInfo = await Order.findOne({
@@ -10,6 +13,24 @@ async function findByMobile(mobile) {
     raw: true,
   });
   return userInfo;
+}
+
+async function findDayCount(date) {
+  const startTime = moment(date).format('YYYY-MM-DD 00:00:00');
+  const endTime = moment(date).format('YYYY-MM-DD 23:59:59');
+  log.info(`startTime${startTime}`);
+  log.info(`endTime${endTime}`);
+  const condition = {};
+  condition.date = {
+    $gte: startTime,
+    $lte: endTime,
+  };
+  const result = await DayCount.findAll({
+    attributes: ['id', 'date', 'count'],
+    raw: true,
+    logging: sql => log.debug('[countFlow Sql] - ', sql),
+  });
+  return result;
 }
 
 async function insetOrder(params) {
@@ -38,6 +59,8 @@ async function countByDate(date) {
 
 async function dealOrder(params) {
   const { mobile, date } = params;
+  const resultday = await findDayCount(date);
+  log.info(`resultday${resultday}`);
   const count = await countByDate(moment(date).format('YYYY-MM-DD 00:00:00'));
   if (count && count.count > 300) {
     const data = {};
