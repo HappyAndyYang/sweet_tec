@@ -26,6 +26,7 @@ async function findDayCount(date) {
     $lte: endTime,
   };
   const result = await DayCount.findAll({
+    where: condition,
     attributes: ['id', 'date', 'count'],
     raw: true,
     logging: sql => console.log('[countFlow Sql] - ', sql),
