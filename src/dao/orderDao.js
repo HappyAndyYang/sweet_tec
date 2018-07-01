@@ -28,7 +28,7 @@ async function findDayCount(date) {
   const result = await DayCount.findAll({
     attributes: ['id', 'date', 'count'],
     raw: true,
-    logging: sql => log.debug('[countFlow Sql] - ', sql),
+    logging: sql => console.log('[countFlow Sql] - ', sql),
   });
   return result;
 }
@@ -64,7 +64,7 @@ async function dealOrder(params) {
   const resultday = await findDayCount(date);
   let dailayNumber = 300;
   if(resultday) {
-    console.log(resultday[0].count);
+    console.log(resultday);
     dailayNumber = resultday[0].count;
   }
   console.log(dailayNumber);
