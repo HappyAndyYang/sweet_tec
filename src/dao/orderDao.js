@@ -62,10 +62,14 @@ async function countByDate(date) {
 async function dealOrder(params) {
   const { mobile, date } = params;
   const resultday = await findDayCount(date);
-  console.log(`resultday${resultday}`);
-  console.log(resultday);
+  let dailayNumber = 300;
+  if(resultday) {
+    console.log(resultday[0].count);
+    dailayNumber = resultday[0].count;
+  }
+  console.log(dailayNumber);
   const count = await countByDate(moment(date).format('YYYY-MM-DD 00:00:00'));
-  if (count && count.count > 300) {
+  if (count && count.count > dailayNumber) {
     const data = {};
     data.flag = true;
     data.message = '抱歉亲，今日预约已满，请更换预约日期重试！';
