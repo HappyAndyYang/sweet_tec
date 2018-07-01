@@ -1,10 +1,10 @@
 import moment from 'moment';
-import { getLogger } from 'log4js';
+// import { getLogger } from 'log4js';
 import sequelize from '../utils/sequelize';
 
 const Order = sequelize.import('../models/order');
 const DayCount = sequelize.import('../models/dayCount');
-const log = getLogger('dao/orderDao');
+// const log = getLogger('dao/orderDao');
 
 async function findByMobile(mobile) {
   const userInfo = await Order.findOne({
@@ -64,7 +64,7 @@ async function dealOrder(params) {
   const { mobile, date } = params;
   const resultday = await findDayCount(date);
   let dailayNumber = 300;
-  if(resultday) {
+  if (resultday && resultday.length > 0) {
     console.log(resultday);
     dailayNumber = resultday[0].count;
   }
