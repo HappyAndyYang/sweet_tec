@@ -18,8 +18,6 @@ async function findByMobile(mobile) {
 async function findDayCount(date) {
   const startTime = moment(date).format('YYYY-MM-DD 00:00:00');
   const endTime = moment(date).format('YYYY-MM-DD 23:59:59');
-  console.log(`startTime${startTime}`);
-  console.log(`endTime${endTime}`);
   const condition = {};
   condition.date = {
     $gte: startTime,
@@ -29,7 +27,7 @@ async function findDayCount(date) {
     where: condition,
     attributes: ['id', 'date', 'count'],
     raw: true,
-    logging: sql => console.log('[countFlow Sql] - ', sql),
+    logging: sql => console.log('[findDayCount Sql] - ', sql),
   });
   return result;
 }
@@ -65,7 +63,6 @@ async function dealOrder(params) {
   const resultday = await findDayCount(date);
   let dailayNumber = 300;
   if (resultday && resultday.length > 0) {
-    console.log(resultday);
     dailayNumber = resultday[0].count;
   }
   console.log(dailayNumber);
