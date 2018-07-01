@@ -18,8 +18,8 @@ async function findByMobile(mobile) {
 async function findDayCount(date) {
   const startTime = moment(date).format('YYYY-MM-DD 00:00:00');
   const endTime = moment(date).format('YYYY-MM-DD 23:59:59');
-  log.info(`startTime${startTime}`);
-  log.info(`endTime${endTime}`);
+  console.log(`startTime${startTime}`);
+  console.log(`endTime${endTime}`);
   const condition = {};
   condition.date = {
     $gte: startTime,
@@ -62,7 +62,8 @@ async function countByDate(date) {
 async function dealOrder(params) {
   const { mobile, date } = params;
   const resultday = await findDayCount(date);
-  log.info(`resultday${resultday}`);
+  console.log(`resultday${resultday}`);
+  console.log(resultday);
   const count = await countByDate(moment(date).format('YYYY-MM-DD 00:00:00'));
   if (count && count.count > 300) {
     const data = {};
