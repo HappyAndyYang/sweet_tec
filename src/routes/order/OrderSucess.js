@@ -22,6 +22,7 @@ class OrderSucess extends Component {
         data: {
           mobile,
           date,
+          address,
           message,
           flag,
         },
@@ -46,6 +47,7 @@ class OrderSucess extends Component {
               <List>
                 <ListItem wrap>手机号码：{mobile}</ListItem>
                 <ListItem wrap>成功预约时间：{date}</ListItem>
+                <ListItem wrap>领取地址：{address}</ListItem>
               </List>
               <Grid data={data} columnNum={1} hasLine={false} activeStyle={false} />
             </div>
