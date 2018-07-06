@@ -10,8 +10,18 @@ const router = Router();
 router.post('/', async (req, res) => {
   try {
     const data = {};
-    const { mobile, orderDate } = req.body;
-    const param = { mobile, date: moment(orderDate).format('YYYY-MM-DD') };
+    const {
+      mobile,
+      orderDate,
+      name,
+      address,
+    } = req.body;
+    const param = {
+      mobile,
+      date: moment(orderDate).format('YYYY-MM-DD'),
+      name,
+      address,
+    };
     const result = await orderDao.dealOrder(param);
     data.status = 0;
     data.message = '预约成功';

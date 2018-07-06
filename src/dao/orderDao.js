@@ -9,7 +9,7 @@ const DayCount = sequelize.import('../models/dayCount');
 async function findByMobile(mobile) {
   const userInfo = await Order.findOne({
     where: { mobile },
-    attributes: ['Id', 'mobile', 'date'],
+    attributes: ['Id', 'mobile', 'date', 'adress'],
     raw: true,
   });
   return userInfo;
@@ -33,7 +33,12 @@ async function findDayCount(date) {
 }
 
 async function insetOrder(params) {
-  const { mobile, date } = params;
+  const {
+    mobile,
+    date,
+    name,
+    address,
+  } = params;
   const userInfo = await findByMobile(mobile);
   if (userInfo) {
     return 0;
@@ -42,7 +47,7 @@ async function insetOrder(params) {
   //   mobile,
   //   date: moment(date).format('YYYY-MM-DD'),
   // });
-  const sql = `INSERT INTO nodeweb.order (mobile, date) VALUES ('${mobile}','${date}')`;
+  const sql = `INSERT INTO nodeweb.order (mobile, date, name, adress) VALUES ('${mobile}','${date}', '${name}','${address}')`;
   await sequelize.query(sql);
   return 1;
 }
@@ -61,7 +66,7 @@ async function countByDate(date) {
 async function dealOrder(params) {
   const { mobile, date } = params;
   const resultday = await findDayCount(date);
-  let dailayNumber = 300;
+  let dailayNumber = 50;
   if (resultday && resultday.length > 0) {
     dailayNumber = resultday[0].count;
   }
@@ -79,6 +84,7 @@ async function dealOrder(params) {
     const data = {};
     data.mobile = result1.mobile;
     data.date = moment(result1.date).format('YYYY-MM-DD');
+    data.address = result1.adress;
     data.message = '恭喜您，预约成功！';
     return data;
   }
@@ -86,6 +92,7 @@ async function dealOrder(params) {
   const data = {};
   data.mobile = result1.mobile;
   data.date = moment(result1.date).format('YYYY-MM-DD');
+  data.address = result1.adress;
   data.message = '您已成功预约过了，请勿重复预约';
   return data;
 }
