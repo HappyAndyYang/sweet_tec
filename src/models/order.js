@@ -18,6 +18,7 @@ export default {
     *order({ payload }, { call, put }) {
       console.log(payload);
       const response = yield call(order, payload);
+      console.log(response);
       const { status } = response;
       yield put({
         type: 'save',
