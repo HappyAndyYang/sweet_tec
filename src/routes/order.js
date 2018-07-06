@@ -14,13 +14,13 @@ router.post('/', async (req, res) => {
       mobile,
       orderDate,
       name,
-      address,
+      myaddress,
     } = req.body;
     const param = {
       mobile,
       date: moment(orderDate).format('YYYY-MM-DD'),
       name,
-      address,
+      myaddress,
     };
     const result = await orderDao.dealOrder(param);
     data.status = 0;
