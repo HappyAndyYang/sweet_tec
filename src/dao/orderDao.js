@@ -37,7 +37,7 @@ async function insetOrder(params) {
     mobile,
     date,
     name,
-    address,
+    myaddress,
   } = params;
   const userInfo = await findByMobile(mobile);
   if (userInfo) {
@@ -47,7 +47,7 @@ async function insetOrder(params) {
   //   mobile,
   //   date: moment(date).format('YYYY-MM-DD'),
   // });
-  const sql = `INSERT INTO nodeweb.order (mobile, date, name, adress) VALUES ('${mobile}','${date}', '${name}','${address}')`;
+  const sql = `INSERT INTO nodeweb.order (mobile, date, name, adress) VALUES ('${mobile}','${date}', '${name}','${myaddress}')`;
   await sequelize.query(sql);
   return 1;
 }
