@@ -16,6 +16,7 @@ export default {
 
   effects: {
     *order({ payload }, { call, put }) {
+      console.log(payload);
       const response = yield call(order, payload);
       const { status } = response;
       yield put({
