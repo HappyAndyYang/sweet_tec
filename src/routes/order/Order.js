@@ -17,11 +17,19 @@ class Order extends Component {
     this.props.form.validateFields({ force: true }, (error) => {
       if (!error) {
         const { dp, mobile, myaddress, name } = this.props.form.getFieldsValue();
-        const orderDate = moment(dp).format('YYYY-MM-DD hh:mm:ss');
-        dispatch({
-          type: 'order/order',
-          payload: { orderDate, mobile, myaddress: myaddress[0], name },
-        });
+        if (!mobile) {
+          alert('请输入手机号');
+        } else if (!name) {
+          alert('请输入姓名');
+        } else if (!myaddress) {
+          alert('请选择领取地址');
+        } else {
+          const orderDate = moment(dp).format('YYYY-MM-DD hh:mm:ss');
+          dispatch({
+            type: 'order/order',
+            payload: { orderDate, mobile, myaddress: myaddress[0], name },
+          });
+        }
       } else {
         alert('预约失败，请重试。');
       }
