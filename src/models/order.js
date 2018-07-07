@@ -3,6 +3,7 @@ import { order } from '../services/api';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
+now.setDate(now.getDate() + 1);
 export default {
   namespace: 'order',
 
