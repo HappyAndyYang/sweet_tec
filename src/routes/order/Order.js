@@ -12,6 +12,7 @@ const ListItem = List.Item;
 
 @connect(({ order }) => ({ order }))
 class Order extends Component {
+  state = { svalue: ['金山区点甜机器人智慧农场'] };
   onSubmit = () => {
     const { dispatch } = this.props;
     this.props.form.validateFields({ force: true }, (error) => {
@@ -79,7 +80,18 @@ class Order extends Component {
             >
               <ListItem arrow="horizontal">选择时间</ListItem>
             </DatePicker>
-            <Picker data={address} cols={1} {...getFieldProps('myaddress')}>
+            <Picker
+              data={address}
+              cols={1}
+              value={address}
+              {...getFieldProps('myaddress', {
+                  initialValue: [{
+                    label: '金山区点甜机器人智慧农场',
+                    value: '金山区点甜机器人智慧农场',
+                  }],
+                })
+              }
+            >
               <ListItem arrow="horizontal">领取地址</ListItem>
             </Picker>
           </List>
