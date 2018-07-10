@@ -85,10 +85,7 @@ class Order extends Component {
               cols={1}
               value={address}
               {...getFieldProps('myaddress', {
-                  initialValue: [{
-                    label: '金山区点甜机器人智慧农场',
-                    value: '金山区点甜机器人智慧农场',
-                  }],
+                  initialValue: ['金山区点甜机器人智慧农场'],
                 })
               }
             >
