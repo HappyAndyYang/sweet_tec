@@ -12,7 +12,6 @@ const ListItem = List.Item;
 
 @connect(({ order }) => ({ order }))
 class Order extends Component {
-  state = { svalue: ['金山区点甜机器人智慧农场'] };
   onSubmit = () => {
     const { dispatch } = this.props;
     this.props.form.validateFields({ force: true }, (error) => {
