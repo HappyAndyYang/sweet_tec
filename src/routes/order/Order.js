@@ -92,11 +92,11 @@ class Order extends Component {
         领取地点
         </div>
         <div className={styles.describe}>
-        1.前往点甜机器人智慧农场领取（地址：亭林镇松前路4180号），也可到瓜田亲自采摘，享受田园乐趣；
+        前往点甜机器人智慧农场领取（地址：亭林镇松前路4180号），也可到瓜田亲自采摘，享受田园乐趣；
         </div>
-        <div className={styles.describe}>
+        {/* <div className={styles.describe}>
         2.前往“绍文雅兹”店铺领取（地址：金山区前京大道277号 ）
-        </div>
+        </div> */}
       </div>
     );
   }
