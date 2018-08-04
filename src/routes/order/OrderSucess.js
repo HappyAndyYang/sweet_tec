@@ -38,7 +38,7 @@ class OrderSucess extends Component {
     }];
     return (
       <div>
-        <NavBar mode="light" icon={<Icon type="left" />} onLeftClick={this.back} className={styles.navbar}>活动预约</NavBar>
+        <NavBar mode="light" /* icon={<Icon type="left" />} */ onLeftClick={this.back} className={styles.navbar}>活动预约</NavBar>
         {
           true ?
             <Grid data={data2} columnNum={1} hasLine={false} activeStyle={false} />
