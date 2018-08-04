@@ -15,12 +15,30 @@ function RouterConfig({ history, app }) {
     models: () => [import('./models/order')],
     component: () => import('./routes/order/OrderSucess'),
   });
+  const DeviceList = Dynamic({
+    app,
+    models: () => [import('./models/devices')],
+    component: () => import('./routes/devices/Devices'),
+  });
+  const DeviceDetail = Dynamic({
+    app,
+    models: () => [import('./models/control')],
+    component: () => import('./routes/control/Control'),
+  });
+  const ControlEdit = Dynamic({
+    app,
+    models: () => [import('./models/control')],
+    component: () => import('./routes/control/ControlEdit'),
+  });
 
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/login" component={Order} />
         <Route exact path="/login/sucess" component={OrderSucess} />
+        <Route exact path="/device" component={DeviceList} />
+        <Route exact path="/deviceDetail/:deviceIp" component={DeviceDetail} />
+        <Route exact path="/deviceDetail/controlEdit/:deviceIp" component={ControlEdit} />
       </Switch>
     </Router>
   );

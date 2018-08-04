@@ -24,7 +24,7 @@ class OrderSucess extends Component {
           date,
           address,
           message,
-          flag,
+          // flag,
         },
       },
     } = this.props;
@@ -34,13 +34,13 @@ class OrderSucess extends Component {
     }];
     const data2 = [{
       icon: (<Icon type="cross-circle" style={{ color: 'red' }} />),
-      text: message,
+      text: '活动已结束',
     }];
     return (
       <div>
         <NavBar mode="light" icon={<Icon type="left" />} onLeftClick={this.back} className={styles.navbar}>活动预约</NavBar>
         {
-          flag ?
+          true ?
             <Grid data={data2} columnNum={1} hasLine={false} activeStyle={false} />
           : (
             <div>

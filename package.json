@@ -24,9 +24,11 @@
     "prop-types": "^15.6.1",
     "qs": "^6.5.1",
     "query-string": "^5.1.0",
-    "rc-form": "^2.2.0",
+    "rc-form": "^2.2.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-draggable": "^3.0.5",
+    "reflv": "^0.0.1",
     "roadhog-api-doc": "^1.0.0"
   },
   "devDependencies": {

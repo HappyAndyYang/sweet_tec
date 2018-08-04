@@ -1,5 +1,6 @@
 import mockjs from 'mockjs';
 import { format, delay } from 'roadhog-api-doc';
+import { devices, controls } from './mock/api';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -18,6 +19,9 @@ const proxy = {
   //   });
   // },
   'POST /order': 'http://localhost:3000',
+  'GET /person/api/getdevices': devices,
+  'GET /person/api/getdeviceDetail': controls,
+  'POST /person/api/savedeviceDetail': controls,
 };
 
 export default noProxy ? {} : delay(proxy, 1000);
