@@ -70,7 +70,8 @@ export const controls = {
       deltaPosition: { x: 0, y: 0 },
     }],
     video: [{
-      text: 'http://www.best-sweet.top:3001/01.mp4',
+      // text: 'http://www.best-sweet.top:3001/01.mp4',
+      text: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
       value: 'mp4',
       id: 1,
       deltaPosition: { x: 0, y: 0 },

@@ -3,8 +3,7 @@ import { routerRedux } from 'dva/router';
 import { Button, NavBar } from 'antd-mobile';
 import { connect } from 'dva';
 import Draggable from 'react-draggable';
-import Reflv from 'reflv';
-// import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player';
 import styles from './control.less';
 
 @connect(
@@ -193,11 +192,16 @@ class Control extends Component {
               onDrag={this.handleDrag('video', item.id)}
             >
               <span style={{ display: 'inline-block', margin: 5 }}>
-                <Reflv
+                {/* <Reflv
                   url={item.text}
                   type={item.value}
                   isLive
                   cors
+                /> */}
+                <ReactPlayer
+                  url={item.text}
+                  width="100%"
+                  height="100%"
                 />
               </span>
             </Draggable>

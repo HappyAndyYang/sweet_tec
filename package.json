@@ -2,6 +2,7 @@
   "name": "antd-mobile-dva-roadhog",
   "version": "1.0.0",
   "description": "antd mobile dva roadhog",
+  "private": true,
   "scripts": {
     "start": "cross-env ESLINT=none roadhog dev",
     "build": "cross-env ESLINT=none roadhog build",
@@ -12,6 +13,7 @@
     "@antv/f2": "^3.1.2",
     "@babel/polyfill": "^7.0.0-beta.41",
     "antd-mobile": "^2.1.8",
+    "bluebird": "^3.5.1",
     "classnames": "^2.2.5",
     "dva": "^2.1.0",
     "dva-loading": "^2.0.0",
@@ -28,7 +30,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-draggable": "^3.0.5",
-    "reflv": "^0.0.1",
+    "react-player": "^1.6.4",
     "roadhog-api-doc": "^1.0.0"
   },
   "devDependencies": {
@@ -46,6 +48,6 @@
     "eslint-plugin-react": "^7.7.0",
     "postcss-pxtorem": "^4.0.1",
     "redbox-react": "^1.5.0",
-    "roadhog": "^2.3.0"
+    "roadhog": "^2.4.2"
   }
 }

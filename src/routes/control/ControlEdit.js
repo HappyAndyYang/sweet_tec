@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Button, NavBar, Popover /* Checkbox */ } from 'antd-mobile';
 import { connect } from 'dva';
 import Draggable from 'react-draggable';
-import Reflv from 'reflv';
-// import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player';
 import styles from './control.less';
 import ModalsBasic from '../../components/Modal/Modals';
 
@@ -247,11 +246,10 @@ class ControlEdit extends Component {
               onDrag={this.handleDrag('video', item.id)}
             >
               <span style={{ display: 'inline-block', margin: 5 }}>
-                <Reflv
+                <ReactPlayer
                   url={item.text}
-                  type={item.value}
-                  isLive
-                  cors
+                  width="100%"
+                  height="100%"
                 />
               </span>
             </Draggable>
