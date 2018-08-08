@@ -8,6 +8,11 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const order = require('./routes/order');
+const devices = require('./routes/devices');
+const buttons = require('./routes/buttons');
+const lbuttons = require('./routes/lbuttons');
+const videos = require('./routes/videos');
+const checkboxs = require('./routes/checkboxs');
 
 const app = express();
 
@@ -26,6 +31,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/order', order);
+app.use('/devices', devices);
+app.use('/buttons', buttons);
+app.use('/lbuttons', lbuttons);
+app.use('/videos', videos);
+app.use('/checkboxs', checkboxs);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

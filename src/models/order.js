@@ -16,12 +16,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+      type: DataTypes.STRING(20),
+      allowNull: true
     },
     adress: {
-      type: DataTypes.STRING(100),
-      allowNull: false
+      type: DataTypes.STRING(20),
+      allowNull: true
     }
   }, {
     tableName: 'order'
