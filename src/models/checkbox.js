@@ -30,6 +30,10 @@ module.exports = function(sequelize, DataTypes) {
     checkboxid: {
       type: DataTypes.INTEGER(11),
       allowNull: false
+    },
+    checkedFlag: {
+      type: DataTypes.STRING(20),
+      allowNull: false
     }
   }, {
     tableName: 'checkbox'

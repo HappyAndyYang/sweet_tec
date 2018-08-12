@@ -14,36 +14,61 @@ async function findDeviceByIP(deviceIp) {
   return result;
 }
 
+async function delCheckboxByDevideId(deviceId) {
+  const result = await Checkbox.destroy({
+    where: { deviceId },
+    logging: sql => console.log('[delCheckboxByDevideId Sql] - ', sql),
+  });
+  return result;
+}
+
 async function findDeviceCheckbox(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
+  const checkboxList = [];
   if (device.length > 0) {
     const result = await Checkbox.findAll({
       where: { deviceId: device[0].deviceId },
-      attributes: ['checkboxid', 'text', 'value', 'x', 'y'],
+      attributes: ['id', 'text', 'value', 'x', 'y', 'checkedFlag'],
       raw: true,
       logging: sql => console.log('[findDeviceCheckbox Sql] - ', sql),
     });
     buttons.push(...result);
-    return buttons;
   }
-  return buttons;
+  buttons.map(item => {
+    const tmp = {};
+    tmp.id = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    const { x, y } = item;
+    tmp.deltaPosition = { x: Number(x), y: Number(y) };
+    tmp.checkedFlag = item.checkedFlag;
+    checkboxList.push(tmp);
+  });
+  return checkboxList;
 }
 
 async function insertCheckbox(params) {
   const {
-    id,
-    text,
-    value,
-    x,
-    y,
+    checkbox,
     deviceIp,
   } = params;
   const device = await findDeviceByIP(deviceIp);
+  await delCheckboxByDevideId(device[0].deviceId);
+  const list = [];
+  checkbox.map(item => {
+    const tmp = {};
+    tmp.checkboxid = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    tmp.deviceId = device[0].deviceId;
+    tmp.x = item.deltaPosition.x;
+    tmp.y = item.deltaPosition.y;
+    tmp.checkedFlag = 'true';
+    list.push(tmp);
+  });
   if (device.length > 0) {
-    const sql = `INSERT INTO nodeweb.checkbox (checkboxid, text, value, x, y, deviceId) VALUES 
-      ('${id}', '${text}', '${value}', '${x}', '${y}', '${device[0].deviceId}')`;
-    await sequelize.query(sql);
+    await Checkbox.bulkCreate(list);
     return 0;
   }
   return 1;

@@ -14,36 +14,59 @@ async function findDeviceByIP(deviceIp) {
   return result;
 }
 
+async function delButtonByDevideId(deviceId) {
+  const result = await Button.destroy({
+    where: { deviceId },
+    logging: sql => console.log('[delButtonByDevideId Sql] - ', sql),
+  });
+  return result;
+}
+
 async function findDeviceButton(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
+  const btnlist = [];
   if (device.length > 0) {
     const result = await Button.findAll({
       where: { deviceId: device[0].deviceId },
-      attributes: ['buttonId', 'text', 'value', 'x', 'y'],
+      attributes: ['id', 'text', 'value', 'x', 'y'],
       raw: true,
       logging: sql => console.log('[findDeviceByIP Sql] - ', sql),
     });
     buttons.push(...result);
-    return buttons;
   }
-  return buttons;
+  buttons.map(item => {
+    const tmp = {};
+    tmp.id = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    const { x, y } = item;
+    tmp.deltaPosition = { x: Number(x), y: Number(y) };
+    btnlist.push(tmp);
+  });
+  return btnlist;
 }
 
 async function insertButton(params) {
   const {
-    id,
-    text,
-    value,
-    x,
-    y,
+    button,
     deviceIp,
   } = params;
   const device = await findDeviceByIP(deviceIp);
+  await delButtonByDevideId(device[0].deviceId);
+  const list = [];
+  button.map(item => {
+    const tmp = {};
+    tmp.buttonId = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    tmp.deviceId = device[0].deviceId;
+    tmp.x = item.deltaPosition.x;
+    tmp.y = item.deltaPosition.y;
+    list.push(tmp);
+  });
   if (device.length > 0) {
-    const sql = `INSERT INTO nodeweb.button (buttonId, text, value, x, y, deviceId) VALUES 
-      ('${id}', '${text}', '${value}', '${x}', '${y}', '${device[0].deviceId}')`;
-    await sequelize.query(sql);
+    await Button.bulkCreate(list);
     return 0;
   }
   return 1;

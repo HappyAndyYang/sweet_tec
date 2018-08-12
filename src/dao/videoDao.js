@@ -14,36 +14,59 @@ async function findDeviceByIP(deviceIp) {
   return result;
 }
 
+async function delVideoByDevideId(deviceId) {
+  const result = await Video.destroy({
+    where: { deviceId },
+    logging: sql => console.log('[delVideoByDevideId Sql] - ', sql),
+  });
+  return result;
+}
+
 async function findDeviceVideo(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
+  const videoList = [];
   if (device.length > 0) {
     const result = await Video.findAll({
       where: { deviceId: device[0].deviceId },
-      attributes: ['videoid', 'text', 'value', 'x', 'y'],
+      attributes: ['id', 'text', 'value', 'x', 'y'],
       raw: true,
       logging: sql => console.log('[findDeviceVideo Sql] - ', sql),
     });
     buttons.push(...result);
-    return buttons;
   }
-  return buttons;
+  buttons.map(item => {
+    const tmp = {};
+    tmp.id = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    const { x, y } = item;
+    tmp.deltaPosition = { x: Number(x), y: Number(y) };
+    videoList.push(tmp);
+  });
+  return videoList;
 }
 
 async function insertVideo(params) {
   const {
-    id,
-    text,
-    value,
-    x,
-    y,
+    video,
     deviceIp,
   } = params;
   const device = await findDeviceByIP(deviceIp);
+  await delVideoByDevideId(device[0].deviceId);
+  const list = [];
+  video.map(item => {
+    const tmp = {};
+    tmp.videoid = item.id;
+    tmp.text = item.text;
+    tmp.value = item.value;
+    tmp.deviceId = device[0].deviceId;
+    tmp.x = item.deltaPosition.x;
+    tmp.y = item.deltaPosition.y;
+    list.push(tmp);
+  });
   if (device.length > 0) {
-    const sql = `INSERT INTO nodeweb.video (videoid, text, value, x, y, deviceId) VALUES 
-      ('${id}', '${text}', '${value}', '${x}', '${y}', '${device[0].deviceId}')`;
-    await sequelize.query(sql);
+    await Video.bulkCreate(list);
     return 0;
   }
   return 1;
