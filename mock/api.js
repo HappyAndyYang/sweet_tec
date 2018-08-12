@@ -80,5 +80,5 @@ export const controls = {
   popoVisible: false,
   popoSelected: '',
   modalsVisible: false,
-  checkedFlag: [false],
+  checkedFlag: [true],
 };

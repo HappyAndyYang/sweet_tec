@@ -11,7 +11,6 @@ class Modals extends Component {
         data,
         // data: { button },
       },
-      checkedFlag,
     } = this.props;
     const tmp = data[`${type}`];
     const id = tmp.length + 1;
@@ -24,17 +23,9 @@ class Modals extends Component {
           id,
           deltaPosition: { x: 0, y: 0 },
         });
-        if (type === 'checkbox') {
-          console.log(checkedFlag);
-          checkedFlag.push(false);
-        }
         dispatch({
           type: 'control/saveComponents',
           payload: data,
-        });
-        dispatch({
-          type: 'control/popoVisibleSave',
-          payload: checkedFlag,
         });
         this.onClose();
       } else {

@@ -9,27 +9,30 @@ export async function order(params) {
 }
 
 export async function getdevices(params) {
-  return request(`/person/api/getdevices?${stringify(params)}`);
+  return request(`/devices?${stringify(params)}`);
 }
 
-export async function adddevices(params) {
-  return request('/person/api/adddevices', {
+export async function addevices(params) {
+  return request('/devices', {
     method: 'POST',
     body: params,
   });
 }
 
 export async function getdeviceDetail(params) {
-  return request(`/person/api/getdeviceDetail?${stringify(params)}`);
+  return request(`/devices/detail?${stringify(params)}`);
 }
 
 export async function savedeviceDetail(params) {
-  return request('/person/api/savedeviceDetail', {
+  return request('/devices/detail', {
     method: 'POST',
     body: params,
   });
 }
 
-// export async function getBindTerminal(params) {
-//   return request(`/api/v1/syt/bindTerminal/${params.openid}`);
-// }
+export async function sendcmd(params) {
+  return request('/devices/sendcmd', {
+    method: 'POST',
+    body: params,
+  });
+}

@@ -12,6 +12,21 @@ class Devices extends Component {
   componentDidMount() {
     this.queryDevices();
   }
+  onSubmit() {
+    const { dispatch } = this.props;
+    this.props.form.validateFields({ force: true }, (error) => {
+      if (!error) {
+        const { lable, value } = this.props.form.getFieldsValue();
+        dispatch({
+          type: 'devices/addDevices',
+          payload: { deviceName: lable, deviceIp: value },
+        });
+      } else {
+        alert('添加设备失败，请重试！');
+      }
+    });
+  }
+
   onClose() {
     const {
       dispatch,
@@ -27,10 +42,10 @@ class Devices extends Component {
     } = this.props;
     dispatch({
       type: 'devices/getDevices',
-      payload: '',
+      payload: { currentPage: 1, pageSize: 10 },
     });
   }
-  adddevice = () => {
+  addevice = () => {
     const {
       dispatch,
     } = this.props;
@@ -61,7 +76,7 @@ class Devices extends Component {
                 fontSize: 14,
                 marginRight: 15,
               }}
-              onClick={this.adddevice}
+              onClick={this.addevice}
             >
               添加
             </div>

@@ -18,10 +18,12 @@ const proxy = {
   //     }
   //   });
   // },
-  'POST /order': 'http://localhost:3000',
-  'GET /person/api/getdevices': devices,
-  'GET /person/api/getdeviceDetail': controls,
-  'POST /person/api/savedeviceDetail': controls,
+  'POST /order': 'http://localhost:3003',
+  'GET /devices': 'http://localhost:3003',
+  'POST /devices': 'http://localhost:3003',
+  'GET /devices/detail': 'http://localhost:3003',
+  'POST /devices/detail': 'http://localhost:3003',
+  'post /devices/sendcmd': 'http://localhost:3003',
 };
 
 export default noProxy ? {} : delay(proxy, 1000);

@@ -19,7 +19,7 @@ class Control extends Component {
     } = this.props;
     dispatch({
       type: 'control/getdeviceDetail',
-      payload: deviceIp,
+      payload: { deviceIp },
     });
   }
 
@@ -35,26 +35,39 @@ class Control extends Component {
     });
   };
 
-  onChange = (id) => {
-    // console.log(id);
-    const { dispatch, control: { checkedFlag } } = this.props;
-    console.log(`checkedFlag=${checkedFlag[id]}`);
-    if (checkedFlag[id]) {
-      console.log('false11');
-    } else {
-      console.log('true22');
+  onChange = (id, checkedFlag) => {
+    const {
+      dispatch,
+      match: {
+        params: { deviceIp },
+      },
+      control: {
+        data: {
+          checkbox,
+        },
+      },
+    } = this.props;
+    const detailData = checkbox ? checkbox.find(item => item.id === id) : {};
+    if (checkedFlag) {
+      const reqParams = {
+        deviceIp,
+        value: detailData.value,
+      };
+      dispatch({
+        type: 'control/sendCmd',
+        payload: reqParams,
+      });
     }
-    checkedFlag[id] = !checkedFlag[id];
+    detailData.checkedFlag = !checkedFlag;
     dispatch({
       type: 'control/popoVisibleSave',
-      payload: { checkedFlag },
+      payload: checkbox,
     });
   }
 
   handleDrag = (type, id) => (e, ui) => {
     const { dispatch, control: { data } } = this.props;
     const deltaPosition = data[`${type}`];
-    // console.log(delta);
     const delta = deltaPosition.find(item => item.id === id);
     delta.deltaPosition.x += ui.deltaX;
     delta.deltaPosition.y += ui.deltaY;
@@ -82,6 +95,51 @@ class Control extends Component {
     dispatch(routerRedux.push(`/deviceDetail/controlEdit/${deviceIp}`));
   }
 
+  sendcmd = (id, type) => {
+    const {
+      dispatch,
+      match: {
+        params: { deviceIp },
+      },
+      control: {
+        data: {
+          button,
+          lbutton,
+        },
+      },
+    } = this.props;
+    switch (type) {
+      case 'button':
+        {
+          const detailData = button ? button.find(item => item.id === id) : {};
+          const reqParams = {
+            deviceIp,
+            value: detailData.value,
+          };
+          dispatch({
+            type: 'control/sendCmd',
+            payload: reqParams,
+          });
+        }
+        break;
+      case 'lbutton':
+        {
+          const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
+          const reqParams = {
+            deviceIp,
+            value: detailData.value,
+          };
+          dispatch({
+            type: 'control/sendCmd',
+            payload: reqParams,
+          });
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     const {
       control: {
@@ -91,10 +149,8 @@ class Control extends Component {
           checkbox,
           video,
         },
-        checkedFlag,
       },
     } = this.props;
-    // console.log(checkedFlag);
     return (
       <div>
         <NavBar
@@ -128,7 +184,7 @@ class Control extends Component {
                   <Button
                   // key={item.id}
                     className={styles.control_btn}
-                    onClick={() => console.log(item.id)}
+                    onClick={() => this.sendcmd(item.id, 'button')}
                   >
                     {item.text}
                   </Button>
@@ -151,7 +207,7 @@ class Control extends Component {
                   // key={item.id}
                     size="small"
                     className={styles.control_lbtn}
-                    onClick={() => console.log(item.id)}
+                    onClick={() => this.sendcmd(item.id, 'lbutton')}
                   >
                     {item.text}
                   </Button>
@@ -172,9 +228,8 @@ class Control extends Component {
               <span style={{ display: 'inline-block', margin: 5 }}>
                 <input
                   type="checkbox"
-                  value="点甜"
-                  checked={checkedFlag[item.id - 1]}
-                  onChange={() => this.onChange(item.id - 1)}
+                  value={item.value}
+                  onChange={() => this.onChange(item.id, item.checkedFlag)}
                 />
                 <span style={{ marginLeft: '5px' }}>{item.text}</span>
               </span>
@@ -192,12 +247,6 @@ class Control extends Component {
               onDrag={this.handleDrag('video', item.id)}
             >
               <span style={{ display: 'inline-block', margin: 5 }}>
-                {/* <Reflv
-                  url={item.text}
-                  type={item.value}
-                  isLive
-                  cors
-                /> */}
                 <ReactPlayer
                   url={item.text}
                   width="100%"
