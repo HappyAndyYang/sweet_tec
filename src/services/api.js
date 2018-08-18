@@ -19,6 +19,13 @@ export async function addevices(params) {
   });
 }
 
+export async function delDevices(params) {
+  return request('/devices/deleteDevice', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function getdeviceDetail(params) {
   return request(`/devices/detail?${stringify(params)}`);
 }

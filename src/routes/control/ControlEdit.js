@@ -7,7 +7,7 @@ import styles from './control.less';
 import ModalsBasic from '../../components/Modal/Modals';
 
 @connect(
-  ({ control }) => ({ control })
+  ({ control, devices }) => ({ control, devices })
 )
 class ControlEdit extends Component {
   componentDidMount() {
@@ -112,14 +112,21 @@ class ControlEdit extends Component {
           lbutton,
         },
       },
+      devices: {
+        data: {
+          list,
+        },
+      },
     } = this.props;
     switch (type) {
       case 'button':
         {
           const detailData = button ? button.find(item => item.id === id) : {};
+          const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
           const reqParams = {
             deviceIp,
             value: detailData.value,
+            port: deviceData.port,
           };
           dispatch({
             type: 'control/sendCmd',

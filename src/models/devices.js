@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { getdevices, addevices } from '../services/api';
+import { getdevices, addevices, delDevices } from '../services/api';
 
 export default {
   namespace: 'devices',
@@ -38,6 +38,14 @@ export default {
       yield put({
         type: 'save',
         payload,
+      });
+    },
+    *delectDevice({ payload }, { call, put }) {
+      console.log(payload);
+      const response = yield call(delDevices, payload);
+      yield put({
+        type: 'save',
+        payload: response,
       });
     },
     *back(_, { put }) {

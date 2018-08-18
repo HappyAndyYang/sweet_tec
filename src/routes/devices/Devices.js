@@ -16,10 +16,10 @@ class Devices extends Component {
     const { dispatch } = this.props;
     this.props.form.validateFields({ force: true }, (error) => {
       if (!error) {
-        const { lable, value } = this.props.form.getFieldsValue();
+        const { lable, value, port } = this.props.form.getFieldsValue();
         dispatch({
           type: 'devices/addDevices',
-          payload: { deviceName: lable, deviceIp: value },
+          payload: { deviceName: lable, deviceIp: value, port },
         });
       } else {
         alert('添加设备失败，请重试！');
@@ -128,6 +128,13 @@ class Devices extends Component {
               placeholder="IP地址"
             >
                 IP地址
+            </InputItem>
+            <InputItem
+              {...getFieldProps('port')}
+              clear
+              placeholder="端口号"
+            >
+                端口号
             </InputItem>
           </List>
         </Modal>

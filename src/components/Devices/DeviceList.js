@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Flex } from 'antd-mobile';
+import { List, Flex, Icon } from 'antd-mobile';
 import { routerRedux } from 'dva/router';
 import styles from './devices.less';
 
@@ -11,6 +11,13 @@ class DeviceList extends Component {
     dispatch(routerRedux.push(`/deviceDetail/${deviceIp}`));
     // console.log(deviceIp);
   }
+  deleteDecice = (deviceIp) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'devices/delectDevice',
+      payload: { deviceIp },
+    });
+  }
   render() {
     const { devicelist } = this.props;
     if (devicelist && devicelist.length > 0) {
@@ -18,15 +25,28 @@ class DeviceList extends Component {
         <List>
           {
             devicelist.map(item => (
-              <ListItem key={item.deviceIp}>
+              <ListItem
+                key={item.deviceIp}
+                className={styles.itemextra}
+                extra={
+                  <Icon
+                    type="cross-circle"
+                    style={{ width: 15, color: 'red' }}
+                    onClick={() => this.deleteDecice(item.deviceIp)}
+                  />}
+              >
                 <Flex onClick={this.detail(item.deviceIp)}>
                   <Flex.Item>
                     <div style={{ paddingLeft: 15 }}>{item.deviceName}</div>
                   </Flex.Item>
-                  {/* <Flex.Item>{item.deviceIp}</Flex.Item> */}
                   <Flex.Item>
                     <ListBrief>
                       {item.deviceIp}
+                    </ListBrief>
+                  </Flex.Item>
+                  <Flex.Item>
+                    <ListBrief>
+                      {item.port}
                     </ListBrief>
                   </Flex.Item>
                 </Flex>

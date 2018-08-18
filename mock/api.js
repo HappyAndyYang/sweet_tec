@@ -23,18 +23,22 @@ export const devices = {
       {
         deviceName: '除草机',
         deviceIp: '192.168.1.1',
+        port: 6666,
       },
       {
         deviceName: '收割机',
         deviceIp: '192.168.1.2',
+        port: 6666,
       },
       {
         deviceName: '巡逻机',
+        port: 6666,
         deviceIp: '192.168.1.3',
       },
       {
         deviceName: '起重机',
         deviceIp: '192.168.1.4',
+        port: 6666,
       },
     ],
     currentPage: 1,

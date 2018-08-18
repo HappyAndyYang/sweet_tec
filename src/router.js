@@ -22,12 +22,12 @@ function RouterConfig({ history, app }) {
   });
   const DeviceDetail = Dynamic({
     app,
-    models: () => [import('./models/control')],
+    models: () => [import('./models/control'), import('./models/devices')],
     component: () => import('./routes/control/Control'),
   });
   const ControlEdit = Dynamic({
     app,
-    models: () => [import('./models/control')],
+    models: () => [import('./models/control'), import('./models/devices')],
     component: () => import('./routes/control/ControlEdit'),
   });
 
