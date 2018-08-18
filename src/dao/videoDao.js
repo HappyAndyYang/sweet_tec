@@ -22,6 +22,17 @@ async function delVideoByDevideId(deviceId) {
   return result;
 }
 
+async function delVideoByDevideIP(deviceIp) {
+  const device = await findDeviceByIP(deviceIp);
+  if (device.length > 0) {
+    const { deviceId } = device[0];
+    await Video.destroy({
+      where: { deviceId },
+      logging: sql => console.log('[delVideoByDevideId Sql] - ', sql),
+    });
+  }
+}
+
 async function findDeviceVideo(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
@@ -73,5 +84,5 @@ async function insertVideo(params) {
 }
 
 export default{
-  findDeviceVideo, insertVideo,
+  findDeviceVideo, insertVideo, delVideoByDevideIP,
 };

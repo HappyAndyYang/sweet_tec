@@ -44,10 +44,12 @@ router.post('/', async (req, res) => {
     const {
       deviceName,
       deviceIp,
+      port,
     } = req.body;
     const param = {
       deviceName,
       deviceIp,
+      port,
     };
     const result = await deviceDao.insertDevice(param);
     data.status = result;
@@ -58,6 +60,28 @@ router.post('/', async (req, res) => {
     const data = {
       status: 1,
       message: e,
+      data: {},
+    };
+    res.json(data);
+  }
+});
+
+router.post('/deleteDevice', async (req, res) => {
+  try {
+    const data = {};
+    const response = {};
+    const result = await deviceDao.deleteDevice(req.body);
+    response.status = 0;
+    response.message = '获取设备列表成功';
+    data.list = result;
+    data.currentPage = 1;
+    data.pageSize = 10;
+    response.data = data;
+    res.json(response);
+  } catch (error) {
+    const data = {
+      status: 1,
+      message: error,
       data: {},
     };
     res.json(data);
@@ -135,9 +159,10 @@ router.post('/sendcmd', async (req, res) => {
     const {
       deviceIp,
       value,
+      port,
     } = req.body;
-    console.log(deviceIp, value);
-    socketClient(true, deviceIp, value);
+    console.log(deviceIp, port, value);
+    socketClient(true, deviceIp, port, value);
     data.data = {};
     res.json(data);
   } catch (e) {

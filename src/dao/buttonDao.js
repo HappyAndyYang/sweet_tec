@@ -5,6 +5,7 @@ const Button = sequelize.import('../models/button');
 // const log = getLogger('dao/orderDao');
 
 async function findDeviceByIP(deviceIp) {
+  console.log(deviceIp);
   const result = await Device.findAll({
     where: { deviceIp },
     attributes: ['deviceId'],
@@ -20,6 +21,17 @@ async function delButtonByDevideId(deviceId) {
     logging: sql => console.log('[delButtonByDevideId Sql] - ', sql),
   });
   return result;
+}
+
+async function delButtonByDevideIP(deviceIp) {
+  const device = await findDeviceByIP(deviceIp);
+  if (device.length > 0) {
+    const { deviceId } = device[0];
+    await Button.destroy({
+      where: { deviceId },
+      logging: sql => console.log('[delButtonByDevideId Sql] - ', sql),
+    });
+  }
 }
 
 async function findDeviceButton(deviceIp) {
@@ -73,5 +85,5 @@ async function insertButton(params) {
 }
 
 export default{
-  findDeviceButton, insertButton,
+  findDeviceButton, insertButton, findDeviceByIP, delButtonByDevideIP,
 };

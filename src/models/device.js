@@ -14,6 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     deviceIp: {
       type: DataTypes.STRING(20),
       allowNull: false
+    },
+    port: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
     }
   }, {
     tableName: 'device'

@@ -22,6 +22,17 @@ async function delCheckboxByDevideId(deviceId) {
   return result;
 }
 
+async function delCheckboxByDevideIP(deviceIp) {
+  const device = await findDeviceByIP(deviceIp);
+  if (device.length > 0) {
+    const { deviceId } = device[0];
+    await Checkbox.destroy({
+      where: { deviceId },
+      logging: sql => console.log('[delCheckboxByDevideId Sql] - ', sql),
+    });
+  }
+}
+
 async function findDeviceCheckbox(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
@@ -75,5 +86,5 @@ async function insertCheckbox(params) {
 }
 
 export default{
-  findDeviceCheckbox, insertCheckbox,
+  findDeviceCheckbox, insertCheckbox, delCheckboxByDevideIP,
 };

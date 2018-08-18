@@ -3,7 +3,7 @@ import { getLogger } from 'log4js';
 
 const log = getLogger('socketClient');
 
-async function socketClient(autoclose, address, message) {
+async function socketClient(autoclose, address, port, message) {
   let inteval;
   const socket = new Socket();
   socket.readable = true;
@@ -17,7 +17,7 @@ async function socketClient(autoclose, address, message) {
   socket.on('error', (error) => {
     log.error(`socket error: ${error}`);
   });
-  socket.connect({ host: address, port: 2001 }, () => {
+  socket.connect({ host: address, port }, () => {
     log.info(' server connected!');
     socket.write(message);
   });
