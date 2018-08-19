@@ -46,12 +46,19 @@ class Control extends Component {
           checkbox,
         },
       },
+      devices: {
+        data: {
+          list,
+        },
+      },
     } = this.props;
     const detailData = checkbox ? checkbox.find(item => item.id === id) : {};
+    const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
     if (checkedFlag) {
       const reqParams = {
         deviceIp,
         value: detailData.value,
+        port: deviceData.port,
       };
       dispatch({
         type: 'control/sendCmd',
@@ -132,9 +139,11 @@ class Control extends Component {
       case 'lbutton':
         {
           const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
+          const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
           const reqParams = {
             deviceIp,
             value: detailData.value,
+            port: deviceData.port,
           };
           dispatch({
             type: 'control/sendCmd',

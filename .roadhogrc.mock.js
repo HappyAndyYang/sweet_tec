@@ -25,6 +25,7 @@ const proxy = {
   'POST /devices/detail': 'http://localhost:3003',
   'POST /devices/sendcmd': 'http://localhost:3003',
   'POST /devices/deleteDevice': 'http://localhost:3003',
+  'POST /devices/login': 'http://localhost:3003',
 };
 
 export default noProxy ? {} : delay(proxy, 1000);

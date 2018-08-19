@@ -10,6 +10,11 @@ function RouterConfig({ history, app }) {
     models: () => [import('./models/order')],
     component: () => import('./routes/order/Order'),
   });
+  const Login = Dynamic({
+    app,
+    models: () => [import('./models/login')],
+    component: () => import('./routes/login/Login'),
+  });
   const OrderSucess = Dynamic({
     app,
     models: () => [import('./models/order')],
@@ -36,6 +41,7 @@ function RouterConfig({ history, app }) {
       <Switch>
         {/* <Route exact path="/login" component={Order} />
         <Route exact path="/login/sucess" component={OrderSucess} /> */}
+        <Route exact path="/login" component={Login} />
         <Route exact path="/login/sucess" component={Order} />
         <Route exact path="/" component={OrderSucess} />
         <Route exact path="/device" component={DeviceList} />

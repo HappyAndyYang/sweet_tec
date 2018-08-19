@@ -8,6 +8,13 @@ export async function order(params) {
   });
 }
 
+export async function userlogin(params) {
+  return request('/devices/login', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function getdevices(params) {
   return request(`/devices?${stringify(params)}`);
 }
