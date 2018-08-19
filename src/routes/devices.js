@@ -9,6 +9,7 @@ import lbuttonDao from '../dao/lbuttonDao';
 import videoDao from '../dao/videoDao';
 import checkboxDao from '../dao/checkboxDao';
 import socketClient from '../utils/socketClient';
+import userDao from '../dao/userDao';
 
 const router = Router();
 
@@ -56,6 +57,36 @@ router.post('/', async (req, res) => {
     data.message = '添加设备成功';
     data.data = {};
     res.json(data);
+  } catch (e) {
+    const data = {
+      status: 1,
+      message: e,
+      data: {},
+    };
+    res.json(data);
+  }
+});
+
+router.post('/login', async (req, res) => {
+  try {
+    const data = {};
+    const {
+      username,
+      password,
+    } = req.body;
+    const result = await userDao.isUserExist(username, password);
+    console.log(result);
+    if (result.length > 0) {
+      data.status = 0;
+      data.message = '登录成功';
+      data.data = {};
+      res.json(data);
+    } else {
+      data.status = 1;
+      data.message = '用户名密码不对，请检查输入';
+      data.data = {};
+      res.json(data);
+    }
   } catch (e) {
     const data = {
       status: 1,
