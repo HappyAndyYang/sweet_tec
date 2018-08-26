@@ -50,3 +50,10 @@ export async function sendcmd(params) {
     body: params,
   });
 }
+
+export async function deleteCompent(params) {
+  return request('/devices/deleteCompent', {
+    method: 'POST',
+    body: params,
+  });
+}

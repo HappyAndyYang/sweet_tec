@@ -34,7 +34,7 @@ class ControlEdit extends Component {
     });
   };
 
-  onChange = (id, checkedFlag) => {
+  onChange = (id) => {
     const {
       dispatch,
       match: {
@@ -46,22 +46,19 @@ class ControlEdit extends Component {
         },
       },
     } = this.props;
-    const detailData = checkbox ? checkbox.find(item => item.id === id) : {};
-    if (checkedFlag) {
+    const falg = confirm('确定要删除吗？');
+    if (falg) {
+      const detailData = checkbox ? checkbox.find(item => item.id === id) : {};
       const reqParams = {
+        type: 'checkbox',
+        id: detailData.id,
         deviceIp,
-        value: detailData.value,
       };
       dispatch({
-        type: 'control/sendCmd',
+        type: 'control/deleteCompent',
         payload: reqParams,
       });
     }
-    detailData.checkedFlag = !checkedFlag;
-    dispatch({
-      type: 'control/popoVisibleSave',
-      payload: checkbox,
-    });
   }
 
   handleDrag = (type, id) => (e, ui) => {
@@ -100,7 +97,7 @@ class ControlEdit extends Component {
       },
     });
   }
-  sendcmd = (id, type) => {
+  deleteCompent = (id, type) => {
     const {
       dispatch,
       match: {
@@ -110,45 +107,58 @@ class ControlEdit extends Component {
         data: {
           button,
           lbutton,
-        },
-      },
-      devices: {
-        data: {
-          list,
+          video,
         },
       },
     } = this.props;
-    switch (type) {
-      case 'button':
-        {
-          const detailData = button ? button.find(item => item.id === id) : {};
-          const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
-          const reqParams = {
-            deviceIp,
-            value: detailData.value,
-            port: deviceData.port,
-          };
-          dispatch({
-            type: 'control/sendCmd',
-            payload: reqParams,
-          });
-        }
-        break;
-      case 'lbutton':
-        {
-          const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
-          const reqParams = {
-            deviceIp,
-            value: detailData.value,
-          };
-          dispatch({
-            type: 'control/sendCmd',
-            payload: reqParams,
-          });
-        }
-        break;
-      default:
-        break;
+    const falg = confirm('确定要删除吗？');
+    if (falg) {
+      switch (type) {
+        case 'button':
+          {
+            const detailData = button ? button.find(item => item.id === id) : {};
+            const reqParams = {
+              type,
+              id: detailData.id,
+              deviceIp,
+            };
+            dispatch({
+              type: 'control/deleteCompent',
+              payload: reqParams,
+            });
+          }
+          break;
+        case 'lbutton':
+          {
+            const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
+            const reqParams = {
+              type,
+              id: detailData.id,
+              deviceIp,
+            };
+            dispatch({
+              type: 'control/deleteCompent',
+              payload: reqParams,
+            });
+          }
+          break;
+        case 'video':
+          {
+            const detailData = video ? video.find(item => item.id === id) : {};
+            const reqParams = {
+              type,
+              id: detailData.id,
+              deviceIp,
+            };
+            dispatch({
+              type: 'control/deleteCompent',
+              payload: reqParams,
+            });
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -248,7 +258,7 @@ class ControlEdit extends Component {
                   <Button
                   // key={item.id}
                     className={styles.control_btn}
-                    onClick={() => this.sendcmd(item.id, 'button')}
+                    onClick={() => this.deleteCompent(item.id, 'button')}
                   >
                     {item.text}
                   </Button>
@@ -270,7 +280,7 @@ class ControlEdit extends Component {
                   // key={item.id}
                     size="small"
                     className={styles.control_lbtn}
-                    onClick={() => this.sendcmd(item.id, 'lbutton')}
+                    onClick={() => this.deleteCompent(item.id, 'lbutton')}
                   >
                     {item.text}
                   </Button>
@@ -291,7 +301,7 @@ class ControlEdit extends Component {
                 <input
                   type="checkbox"
                   value={item.value}
-                  onChange={() => this.onChange(item.id, item.checkedFlag)}
+                  onChange={() => this.onChange(item.id)}
                 />
                 <span style={{ marginLeft: '5px' }}>{item.text}</span>
               </span>
@@ -312,6 +322,7 @@ class ControlEdit extends Component {
                   url={item.text}
                   width="100%"
                   height="100%"
+                  onClick={() => this.deleteCompent(item.id, 'video')}
                 />
               </span>
             </Draggable>

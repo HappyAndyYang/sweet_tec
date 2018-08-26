@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { getdevices, getdeviceDetail, savedeviceDetail, sendcmd } from '../services/api';
+import { getdevices, getdeviceDetail, savedeviceDetail, sendcmd, deleteCompent } from '../services/api';
 
 export default {
   namespace: 'control',
@@ -29,6 +29,15 @@ export default {
     },
     *getdeviceDetail({ payload }, { call, put }) {
       const response = yield call(getdeviceDetail, payload);
+      yield put({
+        type: 'save',
+        payload: response,
+      });
+    },
+    *deleteCompent({ payload }, { call, put }) {
+      console.log(payload);
+      const response = yield call(deleteCompent, payload);
+      console.log(response);
       yield put({
         type: 'save',
         payload: response,
