@@ -34,6 +34,14 @@ async function delButtonByDevideIP(deviceIp) {
   }
 }
 
+async function delButtonById(id) {
+  const result = await Button.destroy({
+    where: { id },
+    logging: sql => console.log('[delButtonById Sql] - ', sql),
+  });
+  return result;
+}
+
 async function findDeviceButton(deviceIp) {
   const device = await findDeviceByIP(deviceIp);
   const buttons = [];
@@ -85,5 +93,5 @@ async function insertButton(params) {
 }
 
 export default{
-  findDeviceButton, insertButton, findDeviceByIP, delButtonByDevideIP,
+  findDeviceButton, insertButton, findDeviceByIP, delButtonByDevideIP, delButtonById,
 };

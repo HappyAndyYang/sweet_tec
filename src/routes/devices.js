@@ -119,6 +119,49 @@ router.post('/deleteDevice', async (req, res) => {
   }
 });
 
+router.post('/deleteCompent', async (req, res) => {
+  try {
+    const { type, id, deviceIp } = req.body;
+    switch (type) {
+      case 'button':
+        await buttonDao.delButtonById(id);
+        break;
+      case 'lbutton':
+        await lbuttonDao.delLButtonById(id);
+        break;
+      case 'video':
+        await videoDao.delVideoById(id);
+        break;
+      case 'checkbox':
+        await checkboxDao.delCheckboxById(id);
+        break;
+      default:
+        break;
+    }
+    const result = {};
+    const resData = {};
+    const result1 = await buttonDao.findDeviceButton(deviceIp);
+    const result2 = await lbuttonDao.findDeviceLButton(deviceIp);
+    const result3 = await checkboxDao.findDeviceCheckbox(deviceIp);
+    const result4 = await videoDao.findDeviceVideo(deviceIp);
+    result.button = result1;
+    result.lbutton = result2;
+    result.checkbox = result3;
+    result.video = result4;
+    resData.data = result;
+    resData.status = 0;
+    resData.message = '删除组件成功';
+    res.json(resData);
+  } catch (error) {
+    const data = {
+      status: 1,
+      message: error,
+      data: {},
+    };
+    res.json(data);
+  }
+});
+
 router.get('/detail', async (req, res) => {
   try {
     const reqData = url.parse(req.url, true).query;
