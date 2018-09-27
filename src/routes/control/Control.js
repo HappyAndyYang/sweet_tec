@@ -124,7 +124,8 @@ class Control extends Component {
       case 'button':
         {
           const detailData = button ? button.find(item => item.id === id) : {};
-          const deviceData = list ? list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
+          const deviceData = list ?
+            list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
           const reqParams = {
             deviceIp: deviceData.deviceIp,
             value: detailData.value,
@@ -139,7 +140,8 @@ class Control extends Component {
       case 'lbutton':
         {
           const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
-          const deviceData = list ? list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
+          const deviceData = list ?
+            list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
           const reqParams = {
             deviceIp: deviceData.deviceIp,
             value: detailData.value,
