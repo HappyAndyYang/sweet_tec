@@ -16,10 +16,10 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     const reqData = url.parse(req.url, true).query;
-    const { currentPage, pageSize } = reqData;
+    const { currentPage, pageSize, userId } = reqData;
     const data = {};
     const response = {};
-    const result = await deviceDao.dealDevices();
+    const result = await deviceDao.dealDevices(userId);
     response.status = 0;
     response.message = '获取设备列表成功';
     data.list = result;
@@ -46,17 +46,26 @@ router.post('/', async (req, res) => {
       deviceName,
       deviceIp,
       port,
+      userId,
     } = req.body;
     const param = {
       deviceName,
       deviceIp,
       port,
+      userId,
     };
-    const result = await deviceDao.insertDevice(param);
-    data.status = result;
-    data.message = '添加设备成功';
-    data.data = {};
-    res.json(data);
+    await deviceDao.insertDevice(param);
+    // data.status = result;
+    // data.message = '添加设备成功';
+    // data.data = {};
+    // res.json(data);
+    const response = {};
+    const result = await deviceDao.dealDevices(userId);
+    response.status = 0;
+    response.message = '添加设备成功';
+    data.list = result;
+    response.data = data;
+    res.json(response);
   } catch (e) {
     const data = {
       status: 1,
@@ -79,6 +88,7 @@ router.post('/login', async (req, res) => {
     if (result.length > 0) {
       data.status = 0;
       data.message = '登录成功';
+      data.userId = result[0].id;
       data.data = {};
       res.json(data);
     } else {
@@ -101,12 +111,19 @@ router.post('/deleteDevice', async (req, res) => {
   try {
     const data = {};
     const response = {};
-    const result = await deviceDao.deleteDevice(req.body);
+    const { userId } = req.body;
+    await deviceDao.deleteDevice(req.body);
+    // response.status = 0;
+    // response.message = '获取设备列表成功';
+    // data.list = result;
+    // data.currentPage = 1;
+    // data.pageSize = 10;
+    // response.data = data;
+    // res.json(response);
+    const result = await deviceDao.dealDevices(userId);
     response.status = 0;
-    response.message = '获取设备列表成功';
+    response.message = '删除设备成功';
     data.list = result;
-    data.currentPage = 1;
-    data.pageSize = 10;
     response.data = data;
     res.json(response);
   } catch (error) {
@@ -121,7 +138,7 @@ router.post('/deleteDevice', async (req, res) => {
 
 router.post('/deleteCompent', async (req, res) => {
   try {
-    const { type, id, deviceIp } = req.body;
+    const { type, id, deviceId } = req.body;
     switch (type) {
       case 'button':
         await buttonDao.delButtonById(id);
@@ -140,10 +157,10 @@ router.post('/deleteCompent', async (req, res) => {
     }
     const result = {};
     const resData = {};
-    const result1 = await buttonDao.findDeviceButton(deviceIp);
-    const result2 = await lbuttonDao.findDeviceLButton(deviceIp);
-    const result3 = await checkboxDao.findDeviceCheckbox(deviceIp);
-    const result4 = await videoDao.findDeviceVideo(deviceIp);
+    const result1 = await buttonDao.findDeviceButton(deviceId);
+    const result2 = await lbuttonDao.findDeviceLButton(deviceId);
+    const result3 = await checkboxDao.findDeviceCheckbox(deviceId);
+    const result4 = await videoDao.findDeviceVideo(deviceId);
     result.button = result1;
     result.lbutton = result2;
     result.checkbox = result3;
@@ -165,13 +182,13 @@ router.post('/deleteCompent', async (req, res) => {
 router.get('/detail', async (req, res) => {
   try {
     const reqData = url.parse(req.url, true).query;
-    const { deviceIp } = reqData;
+    const { deviceId } = reqData;
     const result = {};
     const resData = {};
-    const result1 = await buttonDao.findDeviceButton(deviceIp);
-    const result2 = await lbuttonDao.findDeviceLButton(deviceIp);
-    const result3 = await checkboxDao.findDeviceCheckbox(deviceIp);
-    const result4 = await videoDao.findDeviceVideo(deviceIp);
+    const result1 = await buttonDao.findDeviceButton(deviceId);
+    const result2 = await lbuttonDao.findDeviceLButton(deviceId);
+    const result3 = await checkboxDao.findDeviceCheckbox(deviceId);
+    const result4 = await videoDao.findDeviceVideo(deviceId);
     result.button = result1;
     result.lbutton = result2;
     result.checkbox = result3;
@@ -194,7 +211,7 @@ router.post('/detail', async (req, res) => {
   try {
     const data = {};
     const {
-      deviceIp,
+      deviceId,
       control: {
         data: {
           button,
@@ -204,10 +221,10 @@ router.post('/detail', async (req, res) => {
         },
       },
     } = req.body;
-    const result1 = await buttonDao.insertButton({ button, deviceIp });
-    const result2 = await lbuttonDao.insertLButton({ lbutton, deviceIp });
-    const result3 = await videoDao.insertVideo({ video, deviceIp });
-    const result4 = await checkboxDao.insertCheckbox({ checkbox, deviceIp });
+    const result1 = await buttonDao.insertButton({ button, deviceId });
+    const result2 = await lbuttonDao.insertLButton({ lbutton, deviceId });
+    const result3 = await videoDao.insertVideo({ video, deviceId });
+    const result4 = await checkboxDao.insertCheckbox({ checkbox, deviceId });
     if (result1 === 1 || result2 === 1 || result3 === 1 || result4 === 1) {
       data.message = '设备不存在';
       data.status = 1;

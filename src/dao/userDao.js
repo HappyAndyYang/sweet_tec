@@ -6,7 +6,7 @@ const User = sequelize.import('../models/user');
 async function isUserExist(username, password) {
   const result = await User.findAll({
     where: { username, password },
-    attributes: ['username', 'password'],
+    attributes: ['id', 'username', 'password'],
     raw: true,
     logging: sql => console.log('[isUserExist Sql] - ', sql),
   });

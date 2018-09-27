@@ -8,18 +8,19 @@ const Video = sequelize.import('../models/video');
 
 // const log = getLogger('dao/orderDao');
 
-async function findAllDevices() {
+async function findAllDevices(userId) {
   const result = await Device.findAll({
     attributes: ['deviceId', 'deviceName', 'deviceIp', 'port'],
+    where: { userId },
     raw: true,
     logging: sql => console.log('[findAllDevice Sql] - ', sql),
   });
   return result;
 }
 
-async function findDeviceByIP(deviceIp) {
+async function findDeviceByIP(deviceIp, userId) {
   const result = await Device.findAll({
-    where: { deviceIp },
+    where: { deviceIp, userId },
     attributes: ['deviceId'],
     raw: true,
     logging: sql => console.log('[findDeviceByIP Sql] - ', sql),
@@ -28,25 +29,32 @@ async function findDeviceByIP(deviceIp) {
 }
 
 async function insertDevice(params) {
-  const { deviceIp, deviceName, port } = params;
-  const result = await findDeviceByIP(deviceIp);
+  const {
+    deviceIp,
+    deviceName,
+    port,
+    userId,
+  } = params;
+  const result = await findDeviceByIP(deviceIp, userId);
   if (result.length > 0) {
-    console.log('此设备Ip已存在');
+    console.log('此设备已存在');
     return 0;
   }
-  const tmp = { deviceIp, deviceName, port };
+  const tmp = {
+    deviceIp, deviceName, port, userId,
+  };
   const list = [tmp];
   await Device.bulkCreate(list);
   return 0;
 }
 
 async function deleteDevice(params) {
-  const { deviceIp } = params;
-  const delDevice = await findDeviceByIP(deviceIp);
-  console.log(delDevice);
-  const { deviceId } = delDevice[0];
+  const { deviceId } = params;
+  // const delDevice = await findDeviceByIP(deviceId);
+  // console.log(delDevice);
+  // const { deviceId } = delDevice[0];
   await Device.destroy({
-    where: { deviceIp },
+    where: { deviceId },
     logging: sql => console.log('[deleteDevice Sql] - ', sql),
   });
   await Button.destroy({
@@ -65,8 +73,8 @@ async function deleteDevice(params) {
   return devices;
 }
 
-async function dealDevices() {
-  const devices = await findAllDevices();
+async function dealDevices(userId) {
+  const devices = await findAllDevices(userId);
   return devices;
 }
 

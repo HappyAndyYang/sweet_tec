@@ -41,19 +41,17 @@ async function delVideoById(id) {
   return result;
 }
 
-async function findDeviceVideo(deviceIp) {
-  const device = await findDeviceByIP(deviceIp);
+async function findDeviceVideo(deviceId) {
+  // const device = await findDeviceByIP(deviceIp);
   const buttons = [];
   const videoList = [];
-  if (device.length > 0) {
-    const result = await Video.findAll({
-      where: { deviceId: device[0].deviceId },
-      attributes: ['id', 'text', 'value', 'x', 'y'],
-      raw: true,
-      logging: sql => console.log('[findDeviceVideo Sql] - ', sql),
-    });
-    buttons.push(...result);
-  }
+  const result = await Video.findAll({
+    where: { deviceId },
+    attributes: ['id', 'text', 'value', 'x', 'y'],
+    raw: true,
+    logging: sql => console.log('[findDeviceVideo Sql] - ', sql),
+  });
+  buttons.push(...result);
   buttons.map(item => {
     const tmp = {};
     tmp.id = item.id;
@@ -69,26 +67,22 @@ async function findDeviceVideo(deviceIp) {
 async function insertVideo(params) {
   const {
     video,
-    deviceIp,
+    deviceId,
   } = params;
-  const device = await findDeviceByIP(deviceIp);
-  await delVideoByDevideId(device[0].deviceId);
+  await delVideoByDevideId(deviceId);
   const list = [];
   video.map(item => {
     const tmp = {};
     tmp.videoid = item.id;
     tmp.text = item.text;
     tmp.value = item.value;
-    tmp.deviceId = device[0].deviceId;
+    tmp.deviceId = deviceId;
     tmp.x = item.deltaPosition.x;
     tmp.y = item.deltaPosition.y;
     list.push(tmp);
   });
-  if (device.length > 0) {
-    await Video.bulkCreate(list);
-    return 0;
-  }
-  return 1;
+  await Video.bulkCreate(list);
+  return 0;
 }
 
 export default{

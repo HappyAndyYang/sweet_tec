@@ -30,19 +30,17 @@ async function delLButtonById(id) {
   return result;
 }
 
-async function findDeviceLButton(deviceIp) {
-  const device = await findDeviceByIP(deviceIp);
+async function findDeviceLButton(deviceId) {
+  // const device = await findDeviceByIP(deviceIp);
   const buttons = [];
   const lbtnlist = [];
-  if (device.length > 0) {
-    const result = await LButton.findAll({
-      where: { deviceId: device[0].deviceId },
-      attributes: ['id', 'text', 'value', 'x', 'y'],
-      raw: true,
-      logging: sql => console.log('[findDeviceLButton Sql] - ', sql),
-    });
-    buttons.push(...result);
-  }
+  const result = await LButton.findAll({
+    where: { deviceId },
+    attributes: ['id', 'text', 'value', 'x', 'y'],
+    raw: true,
+    logging: sql => console.log('[findDeviceLButton Sql] - ', sql),
+  });
+  buttons.push(...result);
   buttons.map(item => {
     const tmp = {};
     tmp.id = item.id;
@@ -58,26 +56,22 @@ async function findDeviceLButton(deviceIp) {
 async function insertLButton(params) {
   const {
     lbutton,
-    deviceIp,
+    deviceId,
   } = params;
-  const device = await findDeviceByIP(deviceIp);
-  await delLButtonByDevideId(device[0].deviceId);
+  await delLButtonByDevideId(deviceId);
   const list = [];
   lbutton.map(item => {
     const tmp = {};
     tmp.lbuttonId = item.id;
     tmp.text = item.text;
     tmp.value = item.value;
-    tmp.deviceId = device[0].deviceId;
+    tmp.deviceId = deviceId;
     tmp.x = item.deltaPosition.x;
     tmp.y = item.deltaPosition.y;
     list.push(tmp);
   });
-  if (device.length > 0) {
-    await LButton.bulkCreate(list);
-    return 0;
-  }
-  return 1;
+  await LButton.bulkCreate(list);
+  return 0;
 }
 
 export default{

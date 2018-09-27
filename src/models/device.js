@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     port: {
       type: DataTypes.INTEGER(11),
       allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: '0'
     }
   }, {
     tableName: 'device'
