@@ -45,8 +45,8 @@ function RouterConfig({ history, app }) {
         <Route exact path="/login/sucess" component={Order} />
         <Route exact path="/" component={OrderSucess} />
         <Route exact path="/device" component={DeviceList} />
-        <Route exact path="/deviceDetail/:deviceIp" component={DeviceDetail} />
-        <Route exact path="/deviceDetail/controlEdit/:deviceIp" component={ControlEdit} />
+        <Route exact path="/deviceDetail/:deviceId" component={DeviceDetail} />
+        <Route exact path="/deviceDetail/controlEdit/:deviceId" component={ControlEdit} />
       </Switch>
     </Router>
   );

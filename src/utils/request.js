@@ -30,10 +30,10 @@ function checkStatus(response) {
     message: `请求错误 ${response.status}: ${response.url}`,
     description: errortext,
   });
-  const error = new Error(errortext);
-  error.name = response.status;
-  error.response = response;
-  throw error;
+  // const error = new Error(errortext);
+  // error.name = response.status;
+  // error.response = response;
+  // throw error;
 }
 
 function checkResponse(response) {

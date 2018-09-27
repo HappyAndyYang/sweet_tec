@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { NavBar, PullToRefresh, Icon, Modal, List, InputItem } from 'antd-mobile';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { createForm } from 'rc-form';
 import DeviceList from '../../components/Devices/DeviceList';
+import { checkAuthority } from '../../utils/authority';
 import styles from './devices.less';
 
 @connect(
@@ -10,16 +12,26 @@ import styles from './devices.less';
 )
 class Devices extends Component {
   componentDidMount() {
-    this.queryDevices();
+    const flag = checkAuthority();
+    if (flag) {
+      this.queryDevices();
+    } else {
+      const { dispatch } = this.props;
+      dispatch(routerRedux.push('/login'));
+    }
   }
   onSubmit() {
-    const { dispatch } = this.props;
+    // const { dispatch } = this.props;
+    const { userId } = JSON.parse(localStorage.login);
+    const {
+      dispatch,
+    } = this.props;
     this.props.form.validateFields({ force: true }, (error) => {
       if (!error) {
         const { lable, value, port } = this.props.form.getFieldsValue();
         dispatch({
           type: 'devices/addDevices',
-          payload: { deviceName: lable, deviceIp: value, port },
+          payload: { deviceName: lable, deviceIp: value, port, userId },
         });
       } else {
         alert('添加设备失败，请重试！');
@@ -40,9 +52,10 @@ class Devices extends Component {
     const {
       dispatch,
     } = this.props;
+    const { userId } = JSON.parse(localStorage.login);
     dispatch({
       type: 'devices/getDevices',
-      payload: { currentPage: 1, pageSize: 10 },
+      payload: { currentPage: 1, pageSize: 10, userId },
     });
   }
   addevice = () => {

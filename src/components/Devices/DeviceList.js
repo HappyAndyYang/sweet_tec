@@ -6,16 +6,17 @@ import styles from './devices.less';
 const ListItem = List.Item;
 const ListBrief = ListItem.Brief;
 class DeviceList extends Component {
-  detail = deviceIp => () => {
+  detail = deviceId => () => {
     const { dispatch } = this.props;
-    dispatch(routerRedux.push(`/deviceDetail/${deviceIp}`));
+    dispatch(routerRedux.push(`/deviceDetail/${deviceId}`));
     // console.log(deviceIp);
   }
-  deleteDecice = (deviceIp) => {
+  deleteDecice = (deviceId) => {
     const { dispatch } = this.props;
+    const { userId } = JSON.parse(localStorage.login);
     dispatch({
       type: 'devices/delectDevice',
-      payload: { deviceIp },
+      payload: { deviceId, userId },
     });
   }
   render() {
@@ -26,16 +27,16 @@ class DeviceList extends Component {
           {
             devicelist.map(item => (
               <ListItem
-                key={item.deviceIp}
+                key={item.deviceId}
                 className={styles.itemextra}
                 extra={
                   <Icon
                     type="cross-circle"
                     style={{ width: 15, color: 'red' }}
-                    onClick={() => this.deleteDecice(item.deviceIp)}
+                    onClick={() => this.deleteDecice(item.deviceId)}
                   />}
               >
-                <Flex onClick={this.detail(item.deviceIp)}>
+                <Flex onClick={this.detail(item.deviceId)}>
                   <Flex.Item>
                     <div style={{ paddingLeft: 15 }}>{item.deviceName}</div>
                   </Flex.Item>

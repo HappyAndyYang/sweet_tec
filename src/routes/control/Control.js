@@ -14,12 +14,12 @@ class Control extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
     } = this.props;
     dispatch({
       type: 'control/getdeviceDetail',
-      payload: { deviceIp },
+      payload: { deviceId },
     });
   }
 
@@ -39,7 +39,7 @@ class Control extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
       control: {
         data: {
@@ -53,10 +53,10 @@ class Control extends Component {
       },
     } = this.props;
     const detailData = checkbox ? checkbox.find(item => item.id === id) : {};
-    const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
+    const deviceData = list ? list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
     if (checkedFlag) {
       const reqParams = {
-        deviceIp,
+        deviceIp: deviceData.deviceIp,
         value: detailData.value,
         port: deviceData.port,
       };
@@ -96,17 +96,17 @@ class Control extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
     } = this.props;
-    dispatch(routerRedux.push(`/deviceDetail/controlEdit/${deviceIp}`));
+    dispatch(routerRedux.push(`/deviceDetail/controlEdit/${deviceId}`));
   }
 
   sendcmd = (id, type) => {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
       control: {
         data: {
@@ -124,9 +124,9 @@ class Control extends Component {
       case 'button':
         {
           const detailData = button ? button.find(item => item.id === id) : {};
-          const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
+          const deviceData = list ? list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
           const reqParams = {
-            deviceIp,
+            deviceIp: deviceData.deviceIp,
             value: detailData.value,
             port: deviceData.port,
           };
@@ -139,9 +139,9 @@ class Control extends Component {
       case 'lbutton':
         {
           const detailData = lbutton ? lbutton.find(item => item.id === id) : {};
-          const deviceData = list ? list.find(item => item.deviceIp === deviceIp) : {};
+          const deviceData = list ? list.find(item => Number(item.deviceId) === Number(deviceId)) : {};
           const reqParams = {
-            deviceIp,
+            deviceIp: deviceData.deviceIp,
             value: detailData.value,
             port: deviceData.port,
           };

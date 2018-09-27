@@ -14,12 +14,12 @@ class ControlEdit extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
     } = this.props;
     dispatch({
       type: 'control/getdeviceDetail',
-      payload: { deviceIp },
+      payload: { deviceId },
     });
   }
   onSelect = (opt) => {
@@ -38,7 +38,7 @@ class ControlEdit extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
       control: {
         data: {
@@ -52,7 +52,7 @@ class ControlEdit extends Component {
       const reqParams = {
         type: 'checkbox',
         id: detailData.id,
-        deviceIp,
+        deviceId,
       };
       dispatch({
         type: 'control/deleteCompent',
@@ -85,14 +85,14 @@ class ControlEdit extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
       control,
     } = this.props;
     dispatch({
       type: 'control/savedeviceDetail',
       payload: {
-        deviceIp,
+        deviceId,
         control,
       },
     });
@@ -101,7 +101,7 @@ class ControlEdit extends Component {
     const {
       dispatch,
       match: {
-        params: { deviceIp },
+        params: { deviceId },
       },
       control: {
         data: {
@@ -120,7 +120,7 @@ class ControlEdit extends Component {
             const reqParams = {
               type,
               id: detailData.id,
-              deviceIp,
+              deviceId,
             };
             dispatch({
               type: 'control/deleteCompent',
@@ -134,7 +134,7 @@ class ControlEdit extends Component {
             const reqParams = {
               type,
               id: detailData.id,
-              deviceIp,
+              deviceId,
             };
             dispatch({
               type: 'control/deleteCompent',
@@ -148,7 +148,7 @@ class ControlEdit extends Component {
             const reqParams = {
               type,
               id: detailData.id,
-              deviceIp,
+              deviceId,
             };
             dispatch({
               type: 'control/deleteCompent',

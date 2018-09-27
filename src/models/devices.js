@@ -18,6 +18,7 @@ export default {
   effects: {
     *getDevices({ payload }, { call, put }) {
       const response = yield call(getdevices, payload);
+      console.log(response);
       yield put({
         type: 'save',
         payload: response,
@@ -25,14 +26,15 @@ export default {
     },
     *addDevices({ payload }, { call, put }) {
       const response = yield call(addevices, payload);
+      console.log(response);
       response.modalFlag = false;
       yield put({
         type: 'save',
         payload: response,
       });
-      yield put({
-        type: 'getDevices',
-      });
+      // yield put({
+      //   type: 'getDevices',
+      // });
     },
     *updateDevice({ payload }, { put }) {
       yield put({

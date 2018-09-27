@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { NavBar, Button, InputItem, List } from 'antd-mobile';
 import { createForm } from 'rc-form';
+import { checkAuthority } from '../../utils/authority';
 import styles from './login.less';
 
 @connect(({ login }) => ({ login }))
 class Login extends Component {
+  componentWillMount() {
+    const flag = checkAuthority();
+    if (flag) {
+      const { dispatch } = this.props;
+      dispatch(routerRedux.push('/device'));
+    }
+  }
   onSubmit = () => {
     const { dispatch } = this.props;
     this.props.form.validateFields({ force: true }, (error) => {

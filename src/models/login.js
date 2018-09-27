@@ -12,14 +12,20 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      console.log(payload);
       const response = yield call(userlogin, payload);
+      console.log(response);
       yield put({
         type: 'save',
         payload: response,
       });
       const { status } = response;
       if (status === 0) {
+        // localStorage.setItem('userId', response.userId);
+        const str = JSON.stringify({
+          userId: response.userId,
+          loginTime: new Date(),
+        });
+        localStorage.setItem('login', str);
         yield put(routerRedux.push('/device'));
       }
     },

@@ -29,6 +29,7 @@ export default {
     },
     *getdeviceDetail({ payload }, { call, put }) {
       const response = yield call(getdeviceDetail, payload);
+      console.log(payload);
       yield put({
         type: 'save',
         payload: response,
