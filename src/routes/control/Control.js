@@ -4,6 +4,7 @@ import { Button, NavBar } from 'antd-mobile';
 import { connect } from 'dva';
 import Draggable from 'react-draggable';
 import ReactPlayer from 'react-player';
+import { checkAuthority } from '../../utils/authority';
 import styles from './control.less';
 
 @connect(
@@ -11,16 +12,21 @@ import styles from './control.less';
 )
 class Control extends Component {
   componentDidMount() {
+    const flag = checkAuthority();
     const {
       dispatch,
       match: {
         params: { deviceId },
       },
     } = this.props;
-    dispatch({
-      type: 'control/getdeviceDetail',
-      payload: { deviceId },
-    });
+    if (flag) {
+      dispatch({
+        type: 'control/getdeviceDetail',
+        payload: { deviceId },
+      });
+    } else {
+      dispatch(routerRedux.push('/login'));
+    }
   }
 
   onSelect = (opt) => {

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Button, NavBar, Popover /* Checkbox */ } from 'antd-mobile';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import Draggable from 'react-draggable';
 import ReactPlayer from 'react-player';
 import styles from './control.less';
+import { checkAuthority } from '../../utils/authority';
 import ModalsBasic from '../../components/Modal/Modals';
 
 @connect(
@@ -11,16 +13,21 @@ import ModalsBasic from '../../components/Modal/Modals';
 )
 class ControlEdit extends Component {
   componentDidMount() {
+    const flag = checkAuthority();
     const {
       dispatch,
       match: {
         params: { deviceId },
       },
     } = this.props;
-    dispatch({
-      type: 'control/getdeviceDetail',
-      payload: { deviceId },
-    });
+    if (flag) {
+      dispatch({
+        type: 'control/getdeviceDetail',
+        payload: { deviceId },
+      });
+    } else {
+      dispatch(routerRedux.push('/login'));
+    }
   }
   onSelect = (opt) => {
     const { dispatch } = this.props;
