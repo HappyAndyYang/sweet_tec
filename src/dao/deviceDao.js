@@ -69,8 +69,9 @@ async function deleteDevice(params) {
   await Video.destroy({
     where: { deviceId },
   });
-  const devices = await findAllDevices();
-  return devices;
+  // const devices = await findAllDevices();
+  // return devices;
+  return true;
 }
 
 async function dealDevices(userId) {
