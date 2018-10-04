@@ -67,6 +67,11 @@ class Devices extends Component {
       payload: { modalFlag: true },
     });
   }
+  loginOut = () => {
+    localStorage.removeItem('login');
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/login'));
+  }
   render() {
     const {
       dispatch,
@@ -81,7 +86,7 @@ class Devices extends Component {
       <div>
         <NavBar
           className={styles.navbar}
-          rightContent={
+          rightContent={[
             <div
               key="1"
               style={{
@@ -92,7 +97,19 @@ class Devices extends Component {
               onClick={this.addevice}
             >
               添加
-            </div>
+            </div>,
+            <div
+              key="2"
+              style={{
+              background: '#FFCC00',
+              fontSize: 14,
+              marginRight: 15,
+            }}
+              onClick={this.loginOut}
+            >
+             退出
+            </div>,
+            ]
           }
         >我的设备
         </NavBar>
