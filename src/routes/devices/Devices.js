@@ -168,7 +168,6 @@ class Devices extends Component {
             </InputItem>
           </List>
         </Modal>
-        );
       </div>
     );
   }
