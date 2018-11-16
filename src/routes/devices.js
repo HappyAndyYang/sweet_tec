@@ -10,6 +10,7 @@ import videoDao from '../dao/videoDao';
 import checkboxDao from '../dao/checkboxDao';
 import socketClient from '../utils/socketClient';
 import userDao from '../dao/userDao';
+import { sender } from '../utils/rabbitmqSend';
 
 const router = Router();
 
@@ -253,7 +254,8 @@ router.post('/sendcmd', async (req, res) => {
       port,
     } = req.body;
     console.log(deviceIp, port, value);
-    socketClient(true, deviceIp, port, value);
+    // socketClient(true, deviceIp, port, value);
+    sender(`ID${deviceIp}:${value}`);
     data.data = {};
     res.json(data);
   } catch (e) {
@@ -264,6 +266,10 @@ router.post('/sendcmd', async (req, res) => {
     };
     res.json(data);
   }
+});
+
+router.get('/test', async () => {
+  sender();
 });
 
 module.exports = router;

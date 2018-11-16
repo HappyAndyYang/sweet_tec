@@ -9,6 +9,7 @@
     "models": "sequelize-auto -o 'src/models' -d nodeweb -h 47.98.235.69 -u nodeweb -p 3306 -x Sweet@123 -e mysql"
   },
   "dependencies": {
+    "amqplib": "^0.5.2",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
