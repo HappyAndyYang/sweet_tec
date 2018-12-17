@@ -254,8 +254,10 @@ router.post('/sendcmd', async (req, res) => {
       port,
     } = req.body;
     console.log(deviceIp, port, value);
+    const cmd = `*ID${deviceIp}:${value}#`;
     // socketClient(true, deviceIp, port, value);
-    sender(`ID${deviceIp}:${value}`);
+    socketClient(true, '114.116.39.97', 2000, cmd);
+    // sender(`ID${deviceIp}:${value}`);
     data.data = {};
     res.json(data);
   } catch (e) {
